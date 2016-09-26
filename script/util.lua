@@ -1,4 +1,11 @@
 local util = {}
+util.table = {}
+
+function util.table.get_n(t)
+	local n = 0
+	for i, v in pairs(t) do n = n + 1 end
+	return n
+end
 
 function util.add_unique(tab, value)
 	for i, v in pairs(tab) do if v == value then return end end

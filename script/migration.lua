@@ -6,6 +6,7 @@ function migration.init()
 	if global.player_settings == nil then global.player_settings = {} end
 	if global.last_sorted == nil then global.last_sorted = {} end
 	if global.sorting_requests == nil then global.sorting_requests = {} end
+	if global.player_t_chests == nil then global.player_t_chests = {} end
 end
 
 function migration.check_settings(index)
@@ -29,6 +30,7 @@ function migration.check_settings(index)
 	
 	if type(global.sorting_requests) ~= "table" then global.sorting_requests = {} end
 	if type(global.last_sorted) ~= "table" then global.last_sorted = {} end
+	if type(global.player_t_chests) ~= "table" then global.player_t_chests = {} end
 end
 
 function migration.migrate(data)

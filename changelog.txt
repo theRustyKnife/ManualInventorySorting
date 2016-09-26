@@ -49,3 +49,7 @@
 
 ##1.5.1##
 * Removed the left-over debugging message when auto-sorting
+
+##1.5.2##
+* No more temporary entity spawning and destroying on every player inventory sort
+* Fixed filtered cargo-wagons weren't sorted properly
