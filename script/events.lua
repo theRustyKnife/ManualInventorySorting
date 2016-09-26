@@ -67,7 +67,15 @@ script.on_event("manual-inventory-sort-opened", function(event) -- sort chest ke
 	
 	local player = game.players[event.player_index]
 	if player.opened and util.is_sortable(player.opened) then
-		sorting.sort_inventory{player_index = event.player_index, inventory = player.opened.get_inventory(defines.inventory.car_trunk) or player.opened.get_inventory(defines.inventory.chest) or player.opened.get_inventory(defines.inventory.cargo_wagon), force_override = true}
+		sorting.sort_inventory{
+			player_index = event.player_index,
+			inventory =
+				player.opened.get_inventory(defines.inventory.car_trunk)
+				or player.opened.get_inventory(defines.inventory.chest)
+				or player.opened.get_inventory(defines.inventory.cargo_wagon),
+			force_override = true,
+			filtered = player.opened.type == "cargo-wagon"
+		}
 	end
 end)
 
