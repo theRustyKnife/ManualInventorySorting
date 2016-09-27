@@ -53,3 +53,6 @@
 ##1.5.2##
 * No more temporary entity spawning and destroying on every player inventory sort
 * Fixed filtered cargo-wagons weren't sorted properly
+
+##1.5.3##
+* Fixed temporary chests being selectable ([3947](https://mods.factorio.com/mods/theRustyKnife/manual-inventory-sort/discussion/3947))

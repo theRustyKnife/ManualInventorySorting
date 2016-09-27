@@ -29,6 +29,7 @@ data:extend({
 		icon = "__manual-inventory-sort__/graphics/trans.png",
 		flags = {"placeable-neutral", "placeable-off-grid"},
 		max_health = 10000,
+		selectable_in_game = false,
 		corpse = "small-remnants",
 		collision_mask = {},
 		collision_box = {{0, 0}, {0, 0}},
