@@ -74,7 +74,7 @@ script.on_event("manual-inventory-sort-opened", function(event) -- sort chest ke
 				or player.opened.get_inventory(defines.inventory.chest)
 				or player.opened.get_inventory(defines.inventory.cargo_wagon),
 			force_override = true,
-			filtered = player.opened.type == "cargo-wagon"
+			filtered = (player.opened.type == "cargo-wagon" or player.opened.type == "car")
 		}
 	end
 end)
@@ -96,7 +96,15 @@ script.on_event(defines.events.on_gui_click, function(event)
 		
 		local player = game.players[event.player_index]
 		if player.opened and util.is_sortable(player.opened) then
-			sorting.sort_inventory{player_index = event.player_index, inventory = player.opened.get_inventory(defines.inventory.car_trunk) or player.opened.get_inventory(defines.inventory.chest) or player.opened.get_inventory(defines.inventory.cargo_wagon), force_override = true}
+			sorting.sort_inventory{
+			player_index = event.player_index,
+			inventory =
+				player.opened.get_inventory(defines.inventory.car_trunk)
+				or player.opened.get_inventory(defines.inventory.chest)
+				or player.opened.get_inventory(defines.inventory.cargo_wagon),
+			force_override = true,
+			filtered = (player.opened and (player.opened.type == "cargo-wagon" or player.opened.type == "car"))
+		}
 		end
 	elseif event.element.name == "manual-inventory-custom_sort-save" then
 		gui.custom_sort(game.players[event.player_index], global.player_settings[event.player_index])
