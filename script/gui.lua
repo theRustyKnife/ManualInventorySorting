@@ -12,7 +12,6 @@ function gui.options_gui(player, settings)
 		settings.sort_limit_enabled = gui["sort_limit_enabled"].state
 		settings.sort_limit = tonumber(gui["sort_limit_flow"]["sort_limit"].text)
 		settings.sort_limit_override = gui["flow_fix"]["sort_limit_override"].state
-		--settings.custom_sort_enabled = gui["flow_fix"]["custom_sort_flow"]["custom_sort_enabled"].state
 		settings.sort_buttons_enabled = gui["flow_fix"]["sort_buttons_enabled"].state
 		
 		if settings.sort_limit == nil then settings.sort_limit = 10 end
@@ -34,11 +33,6 @@ function gui.options_gui(player, settings)
 		flow_fix = gui.add{type = "flow", name = "flow_fix", direction = "vertical"}
 		
 		flow_fix.add{type = "checkbox", name = "sort_limit_override", state = settings.sort_limit_override, caption = {"manual-inventory-gui-sort_limit_override"}}
-		
-		--[[custom_sort_flow = flow_fix.add{type = "flow", name = "custom_sort_flow", direction = "horizontal"}
-		t_gui = custom_sort_flow.add{type = "checkbox", name = "custom_sort_enabled", state = settings.custom_sort_enabled, caption = {"manual-inventory-gui-custom_sort_enabled"}}
-		custom_sort_flow.add{type = "button", name = "manual-inventory-options-open_custom_sort", caption = {"manual-inventory-gui-options-open_custom_sort"}}
-		t_gui.style.top_padding = 10]]
 		
 		flow_fix.add{type = "checkbox", name = "sort_buttons_enabled", state = settings.sort_buttons_enabled, caption = {"manual-inventory-gui-sort_buttons_enabled"}}
 		
