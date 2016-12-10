@@ -13,7 +13,7 @@ local function iterate_i_slots(i_slots, inventory)
 		
 		if util.table.get_n(i_slots.filters[i_slots.current_name]) == 0 then -- get the next slot, if there are no other filtered ones (i_slot)
 			i_slots.filters[i_slots.current_name] = nil
-			i_slots.next = i_slots.i
+			i_slots.next = i_slots.i + 1
 		else -- get the next slot if there are other filtered ones (the first one)
 			i_slots.next = i_slots.filters[i_slots.current_name][1]
 		end
@@ -98,6 +98,16 @@ function sorting.sort_inventory(arg)
 	local filters = nil
 	local sort_limit = #inventory
 	
+	if (not sort_limit_override) and global.player_settings[player_index].sort_limit_enabled then
+		-- sort limit is enabled - need to figure out what it actually is
+		if global.player_settings[player_index].sort_limit >= 0 and global.player_settings[player_index].sort_limit < sort_limit then -- for positive limits (can't exceed inventory size)
+			sort_limit = global.player_settings[player_index].sort_limit
+			
+		elseif global.player_settings[player_index].sort_limit < 0 and global.player_settings[player_index].sort_limit > 0 - sort_limit then -- for negative limits (result can't be <= 0)
+			sort_limit = sort_limit + global.player_settings[player_index].sort_limit
+		end
+	end
+	
 	if filtered then -- figure out which slots have what filters
 		filters = {}
 		for i = 1, sort_limit do
@@ -107,16 +117,6 @@ function sorting.sort_inventory(arg)
 				if filters[filter] then table.insert(filters[filter], i)
 				else filters[filter] = {i} end
 			end
-		end
-	end
-	
-	if (not sort_limit_override) and global.player_settings[player_index].sort_limit_enabled then
-		-- sort limit is enabled - need to figure out what it actually is
-		if global.player_settings[player_index].sort_limit >= 0 and global.player_settings[player_index].sort_limit < sort_limit then -- for positive limits (can't exceed inventory size)
-			sort_limit = global.player_settings[player_index].sort_limit
-			
-		elseif global.player_settings[player_index].sort_limit < 0 and global.player_settings[player_index].sort_limit > 0 - sort_limit then -- for negative limits (result can't be <= 0)
-			sort_limit = sort_limit + global.player_settings[player_index].sort_limit
 		end
 	end
 	
