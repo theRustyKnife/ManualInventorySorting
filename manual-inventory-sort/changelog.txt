@@ -1,3 +1,6 @@
+##1.6.0##
+* Updated for Factorio 0.15
+
 ##1.5.5##
 * Fixed sorting of certain items would cause a crash when there were filters for them ([6067](https://mods.factorio.com/mods/theRustyKnife/manual-inventory-sort/discussion/6067))
 * Fixed a possible crash when sorting cars or wagons with bigger inventories than any chest
