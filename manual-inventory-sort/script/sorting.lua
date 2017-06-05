@@ -148,6 +148,7 @@ function sorting.sort_inventory(arg)
 	for i = 1, #orders do -- go one order at a time, this also ensures that there's going to be only one item type in each iteration of this loop
 		local t_stacks = util.get_staks_with_order(orders[i], stacks)
 		local damaged_stacks = {} -- because stacks with damage go at the end
+		local stacks_with_grid = {} -- put stacks with any equipment in their grid at the end (before damaged)
 		local first = true -- first can't merge with previous stacks, since they're a different type
 		i_slots.current_name = t_stacks[1].stack.name
 		iterate_i_slots(i_slots, inventory)
@@ -155,21 +156,27 @@ function sorting.sort_inventory(arg)
 		for i_stack = 1, #t_stacks do
 			local c_stack = t_stacks[i_stack]
 			
+			local extra_properties = {}
+			if c_stack.stack.grid and next(c_stack.stack.grid.equipment) ~= nil then extra_properties.grid = true; end
+			if c_stack.stack.health and c_stack.stack.health ~= 1 and not extra_properties.grid then extra_properties.health = c_stack.stack.health; end -- don't insert if item has grid as that already handles moving to end
+			
 			if not first and t_chest_inventory[i_slots.current].valid_for_read and t_chest_inventory[i_slots.current].name == c_stack.stack.name then -- there's a stack available for merge
 				local free_space = c_stack.prototype.stack_size -  t_chest_inventory[i_slots.current].count
 				
-				local extra_properties = {}
-				if c_stack.stack.type == "ammo" then extra_properties.ammo = c_stack.stack.ammo end
-				if c_stack.stack.health and c_stack.stack.health ~= 1 then extra_properties.health = c_stack.stack.health end
-				if c_stack.stack.durability then extra_properties.durability = c_stack.stack.durability end
+				-- these are only needed when merging, so no point in getting them otherwise
+				if c_stack.stack.type == "ammo" then extra_properties.ammo = c_stack.stack.ammo; end
+				if c_stack.stack.durability then extra_properties.durability = c_stack.stack.durability; end
 				
-				if extra_properties.ammo then -- ammo
+				if extra_properties.ammo then -- ammo - maybe move this after the health and grid checks? Can ammo have health or grid?
 					t_chest_inventory[i_slots.next].set_stack(c_stack.stack) -- put the stack into the next slot
 					if util.compress_ammo(t_chest_inventory[i_slots.current], t_chest_inventory[i_slots.next]) then iterate_i_slots(i_slots, inventory) end -- merge stacks and only iterate i_slots.i if the next slot still as something in it
-					
+				
+				elseif extra_properties.grid then -- item has an equipment grid attached to it - same as health
+					table.insert(stacks_with_grid, c_stack)
+				
 				elseif extra_properties.health then -- item is damaged - put at the end and do not stack!
 					table.insert(damaged_stacks, c_stack)
-					
+				
 				elseif extra_properties.durability then -- durability (same as ammo)
 					t_chest_inventory[i_slots.next].set_stack(c_stack.stack)
 					if util.compress_usable_stacks(t_chest_inventory[i_slots.current], t_chest_inventory[i_slots.next]) then iterate_i_slots(i_slots, inventory) end
@@ -186,7 +193,10 @@ function sorting.sort_inventory(arg)
 					end
 				end
 			else -- there are no stacks to merge with
-				if c_stack.stack.health and c_stack.stack.health ~= 1 then -- damaged - goes to the end
+				if extra_properties.grid then -- has grid - goes to the end
+					table.insert(stacks_with_grid, c_stack)
+				
+				elseif extra_properties.health then -- damaged - goes to the end
 					table.insert(damaged_stacks, c_stack)
 					
 				else -- set it to the next stack
@@ -194,6 +204,11 @@ function sorting.sort_inventory(arg)
 					first = false
 				end
 			end
+		end
+		
+		for i_grid = 1, #stacks_with_grid do -- insert stacks with grid (not sure what vanilla behavior is here, but I'm guessing it doesn't matter all that much)
+			if not first then iterate_i_slots(i_slots, inventory) else first = false; end -- same as damaged
+			t_chest_inventory[i_slots.current].set_stack(stacks_with_grid[i_grid].stack)
 		end
 		
 		for i_damaged = 1, #damaged_stacks do -- insert the dmaged stacks (for now these are inserted in the order they were originally - vanilla sorts them by ammount of health left)
