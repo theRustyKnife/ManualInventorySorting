@@ -33,7 +33,7 @@ This mod adds various hotkeys and settings to allow you to sort your inventory e
 
 **Any feedback or suggestions are welcome!**
 
-**You can also ask questions on the [forum](https://forums.factorio.com/viewtopic.php?f=92&t=34409)!**
+**You can now also ask questions on the [forum](https://forums.factorio.com/viewtopic.php?f=92&t=34409)!**
 
 **[Check out my other mods too!](https://mods.factorio.com/mods/theRustyKnife)**
 
