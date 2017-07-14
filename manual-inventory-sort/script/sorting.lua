@@ -97,19 +97,21 @@ function sorting.sort_inventory(arg)
 	local orders = {}
 	local filters = nil
 	local sort_limit = #inventory
-	local inventory_size = #inventory
+	local sort_start = 1
 	
 	if (not sort_limit_override) and global.player_settings[player_index].sort_limit_enabled then
 		-- sort limit is enabled - need to figure out what it actually is
+		-- sort limit now means "how many stacks not to sort" rather than the previous "how many stacks to sort"
+		-- supports sort_limit_type setting to allow the player to choose which mode she wnats to use
 		if global.player_settings[player_index].sort_limit >= 0 and global.player_settings[player_index].sort_limit < sort_limit then -- for positive limits (can't exceed inventory size)
-			sort_limit = global.player_settings[player_index].sort_limit
+			if global.player_settings[player_index].sort_limit_type then sort_limit = global.player_settings[player_index].sort_limit
+			else sort_start = global.player_settings[player_index].sort_limit+1; end
 			
 		elseif global.player_settings[player_index].sort_limit < 0 and global.player_settings[player_index].sort_limit > 0 - sort_limit then -- for negative limits (result can't be <= 0)
-			sort_limit = sort_limit + global.player_settings[player_index].sort_limit
+			if global.player_settings[player_index].sort_limit_type then sort_limit = sort_limit + global.player_settings[player_index].sort_limit
+			else sort_start = sort_limit + global.player_settings[player_index].sort_limit+1; end
 		end
 	end
-	local sort_start = inventory_size - sort_limit + 1 -- invert sort limit so don't first items
-	sort_limit = inventory_size
 	if filtered then -- figure out which slots have what filters
 		filters = {}
 		for i = sort_start, sort_limit do
