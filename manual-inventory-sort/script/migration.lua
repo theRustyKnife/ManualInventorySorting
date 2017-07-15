@@ -70,6 +70,13 @@ function migration.migrate(data)
 				}
 			end
 		end
+		
+		if old_version < version"1.7.0" then
+			for _, settings in pairs(global.player_settings) do
+				-- Set type to true if the player used sort_limit before to preserve the same behavior
+				if settings.sort_limit_enabled then settings.sort_limit_type = true; end
+			end
+		end
 	end
 end
 
