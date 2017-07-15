@@ -1,12 +1,12 @@
 {
 	"name": "manual-inventory-sort",
-	"version": "1.6.1",
+	"version": "1.7.0",
 	"factorio_version": "0.15",
 	"title": "Manual Inventory Sorting",
 	"author": "TheRustyKnife",
 	"contact": "therustyknife13@gmail.com",
 	"description": "Makes some tweaks to the way inventory sorting works.\nYou can sort your inventory on demand or toggle auto-sort. Auto-sort can be configured to work for just a part of your inventory. \nIt's also possible to sort chests, cars and cargo wagons.",
 	"homepage": "http://mods.factorio.com/mods/theRustyKnife/manual-inventory-sort",
-	"date": "2017-06-05",
+	"date": "2017-07-15",
 	"dependencies": ["base"]
 }

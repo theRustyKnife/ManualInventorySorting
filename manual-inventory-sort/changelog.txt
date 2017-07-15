@@ -1,3 +1,6 @@
+## 1.7.0 ##
++ A new option for part inventory sorting for sorting beggining/end of the inventory ([10](https://github.com/theRustyKnife/ManualInventorySorting/pull/10))
+
 ## 1.6.1 ##
 * Fixed stackable items with equipment grids could get deleted in some cases ([14638](https://mods.factorio.com/mods/theRustyKnife/manual-inventory-sort/discussion/14638))
 
