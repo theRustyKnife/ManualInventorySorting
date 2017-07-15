@@ -97,20 +97,24 @@ function sorting.sort_inventory(arg)
 	local orders = {}
 	local filters = nil
 	local sort_limit = #inventory
+	local sort_start = 1
 	
 	if (not sort_limit_override) and global.player_settings[player_index].sort_limit_enabled then
 		-- sort limit is enabled - need to figure out what it actually is
+		-- sort limit now means "how many stacks not to sort" rather than the previous "how many stacks to sort"
+		-- supports sort_limit_type setting to allow the player to choose which mode she wnats to use
 		if global.player_settings[player_index].sort_limit >= 0 and global.player_settings[player_index].sort_limit < sort_limit then -- for positive limits (can't exceed inventory size)
-			sort_limit = global.player_settings[player_index].sort_limit
+			if global.player_settings[player_index].sort_limit_type then sort_limit = global.player_settings[player_index].sort_limit
+			else sort_start = global.player_settings[player_index].sort_limit+1; end
 			
 		elseif global.player_settings[player_index].sort_limit < 0 and global.player_settings[player_index].sort_limit > 0 - sort_limit then -- for negative limits (result can't be <= 0)
-			sort_limit = sort_limit + global.player_settings[player_index].sort_limit
+			if global.player_settings[player_index].sort_limit_type then sort_limit = sort_limit + global.player_settings[player_index].sort_limit
+			else sort_start = sort_limit + global.player_settings[player_index].sort_limit+1; end
 		end
 	end
-	
 	if filtered then -- figure out which slots have what filters
 		filters = {}
-		for i = 1, sort_limit do
+		for i = sort_start, sort_limit do
 			local filter = inventory.get_filter(i)
 			
 			if filter then
@@ -119,10 +123,9 @@ function sorting.sort_inventory(arg)
 			end
 		end
 	end
-	
 	------------ SORTING ------------
 	
-	for i = 1, sort_limit do -- put the content into a table
+	for i = sort_start, sort_limit do -- put the content into a table
 		local stack = inventory[i]
 		if stack ~= nil and stack.valid_for_read and stack.valid then
 			local prototype = game.item_prototypes[stack.name]
@@ -144,7 +147,7 @@ function sorting.sort_inventory(arg)
 	-- if global.player_settings[player_index].custom_sort_enabled then sort_orders(orders, global.player_settings[player_index].sorting_prefs) end -- WIP custom sorting (waiting for GUI)
 	
 	-- arrange the stacks in correct order into the t_chest inventory
-	local i_slots = {i = 0, current = 1, next = 2, filters = filters}
+	local i_slots = {i = sort_start - 1, current = sort_start, next = sort_start + 1, filters = filters}
 	for i = 1, #orders do -- go one order at a time, this also ensures that there's going to be only one item type in each iteration of this loop
 		local t_stacks = util.get_staks_with_order(orders[i], stacks)
 		local damaged_stacks = {} -- because stacks with damage go at the end
@@ -219,7 +222,7 @@ function sorting.sort_inventory(arg)
 	
 	------------ END OF SORTING ------------
 	
-	for i = 1, sort_limit do inventory[i].set_stack(t_chest_inventory[i]) end -- copy the sorted content back to the original inventory
+	for i = sort_start, sort_limit do inventory[i].set_stack(t_chest_inventory[i]) end -- copy the sorted content back to the original inventory
 	
 	if sorting_player then t_chest_inventory.clear() -- leave the t_chest in place with empty inventory if we were sorting players inventory
 	else t_chest.destroy() end -- destroy the chest otherwise

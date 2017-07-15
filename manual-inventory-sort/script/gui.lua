@@ -10,6 +10,7 @@ function gui.options_gui(player, settings)
 		
 		settings.auto_sort = gui["auto_sort"].state
 		settings.sort_limit_enabled = gui["sort_limit_enabled"].state
+		settings.sort_limit_type = gui["sort_limit_type"].state
 		settings.sort_limit = tonumber(gui["sort_limit_flow"]["sort_limit"].text)
 		settings.sort_limit_override = gui["flow_fix"]["sort_limit_override"].state
 		settings.sort_buttons_enabled = gui["flow_fix"]["sort_buttons_enabled"].state
@@ -24,6 +25,8 @@ function gui.options_gui(player, settings)
 		gui.add{type = "checkbox", name = "auto_sort", state = settings.auto_sort, caption = {"manual-inventory-gui-auto_sort"}}
 		
 		gui.add{type = "checkbox", name = "sort_limit_enabled", state = settings.sort_limit_enabled, caption = {"manual-inventory-gui-sort_limit_enabled"}}
+		
+		gui.add{type = "checkbox", name = "sort_limit_type", state = settings.sort_limit_type or false, caption = {"manual-inventory-gui-sort_limit_type"}}
 		
 		sort_limit_flow = gui.add{type = "flow", name = "sort_limit_flow"}
 		local t_gui = sort_limit_flow.add{type = "label", name = "sort_limit_caption", caption = {"manual-inventory-gui-sort_limit"}}
