@@ -72,9 +72,9 @@ function sorting.sort_inventory(arg)
 	
 	local sorting_player = inventory == nil -- need to remember this for destroying t_chests of non-player entities
 	local t_chest
+	local player = player_index and game.players[player_index]
 	
 	if sorting_player then -- sorting player inventory - use players t_chest
-		local player = game.players[player_index]
 		inventory = player.get_inventory(defines.inventory.player_main)
 		
 		if not global.player_t_chests[player_index] or not global.player_t_chests[player_index].valid then -- this player doesn't have her t_chest yet, so create one
@@ -137,7 +137,7 @@ function sorting.sort_inventory(arg)
 			if (prototype.order) then order = order .. prototype.order end
 			order = order .. prototype.name
 			
-			table.insert(stacks, {stack = stack, prototype = prototype, order = order})
+			table.insert(stacks, {stack = stack, prototype = prototype, order = order, orig_index = i})
 			util.add_unique(orders, order)
 		end
 	end
@@ -145,6 +145,8 @@ function sorting.sort_inventory(arg)
 	table.sort(orders) -- sort the strings alphabetically
 	
 	-- if global.player_settings[player_index].custom_sort_enabled then sort_orders(orders, global.player_settings[player_index].sorting_prefs) end -- WIP custom sorting (waiting for GUI)
+	
+	local index_map = {} -- This is a table of the new indices indexed by the original indices
 	
 	-- arrange the stacks in correct order into the t_chest inventory
 	local i_slots = {i = sort_start - 1, current = sort_start, next = sort_start + 1, filters = filters}
@@ -207,6 +209,9 @@ function sorting.sort_inventory(arg)
 					first = false
 				end
 			end
+			
+			-- If the item is unstackable, save it's index mapping
+			if c_stack.prototype.stack_size == 1 then index_map[c_stack.orig_index] = i_slots.current; end
 		end
 		
 		for i_grid = 1, #stacks_with_grid do -- insert stacks with grid (not sure what vanilla behavior is here, but I'm guessing it doesn't matter all that much)
@@ -222,7 +227,19 @@ function sorting.sort_inventory(arg)
 	
 	------------ END OF SORTING ------------
 	
-	for i = sort_start, sort_limit do inventory[i].set_stack(t_chest_inventory[i]) end -- copy the sorted content back to the original inventory
+	-- copy the sorted content back to the original inventory
+	local opened_index = nil
+	local opened_state = player and (player.opened_gui_type == defines.gui_type.item)
+	for i = sort_start, sort_limit do
+		inventory[i].set_stack(t_chest_inventory[i])
+		if opened_state and not opened_index and (player.opened_gui_type == defines.gui_type.none) then
+			-- This item is currently opened by the player - Reopen it
+			player.opened = inventory[index_map[i]]
+		end
+	end
+	
+	-- Reopen item if possible
+	if opened_state and opened_index then player.opened = inventory[index_map[opened_index]]; end
 	
 	if sorting_player then t_chest_inventory.clear() -- leave the t_chest in place with empty inventory if we were sorting players inventory
 	else t_chest.destroy() end -- destroy the chest otherwise
