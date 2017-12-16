@@ -79,6 +79,11 @@ function util.is_sortable(entity)
 	return false
 end
 
+local NON_FILTERED_ENTITIES = {container = true, ['logistic-container'] = true}
+function util.is_filtered(entity)
+	return not NON_FILTERED_ENTITIES[entity.type]
+end
+
 function util.remove_element(tab, value)
 	for i, v in pairs(tab) do
 		if v == value then

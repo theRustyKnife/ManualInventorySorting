@@ -66,6 +66,10 @@ function sorting.sort_inventory(arg)
 	else player_index = arg
 	end
 	
+	if player_index ~= 0 and not inventory then
+		filtered = true
+	end
+	
 	migration.check_settings(player_index)
 	
 	sort_limit_override = sort_limit_override and global.player_settings[player_index].sort_limit_override or force_override
