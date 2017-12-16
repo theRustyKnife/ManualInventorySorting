@@ -27,6 +27,7 @@ data:extend({
 		type = "container",
 		name = "manual-inventory-sort-tmp-chest",
 		icon = "__manual-inventory-sort__/graphics/trans.png",
+		icon_size = 32,
 		flags = {"placeable-neutral", "placeable-off-grid"},
 		max_health = 10000,
 		selectable_in_game = false,
@@ -46,20 +47,8 @@ data:extend({
 			width = 0,
 			height = 0
 		},
-		circuit_wire_connection_point =
-		{
-			shadow =
-			{
-				red = {0.734375, 0.453125},
-				green = {0.609375, 0.515625},
-			},
-			wire =
-			{
-				red = {0.40625, 0.21875},
-				green = {0.40625, 0.375},
-			}
-		},
-		circuit_connector_sprites = get_circuit_connector_sprites({0.1875, 0.15625}, nil, 18),
+		circuit_wire_connection_point = circuit_connector_definitions["chest"].points,
+		circuit_connector_sprites = circuit_connector_definitions["chest"].sprites,
 		circuit_wire_max_distance = 0
 	},
 })

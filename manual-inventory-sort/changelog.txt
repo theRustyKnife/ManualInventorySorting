@@ -1,3 +1,7 @@
+## 1.8.0 ##
+* Updated for 0.16
+* Fixed that opened blueprint books and similar items would close when the inventory was sorted ([4](https://github.com/theRustyKnife/ManualInventorySorting/issues/4))
+
 ## 1.7.0 ##
 + A new option for part inventory sorting for sorting beggining/end of the inventory ([10](https://github.com/theRustyKnife/ManualInventorySorting/pull/10))
 
