@@ -74,7 +74,7 @@ script.on_event("manual-inventory-sort-opened", function(event) -- sort chest ke
 				or player.opened.get_inventory(defines.inventory.chest)
 				or player.opened.get_inventory(defines.inventory.cargo_wagon),
 			force_override = true,
-			filtered = (player.opened.type == "cargo-wagon" or player.opened.type == "car")
+			filtered = util.is_filtered(player.opened)
 		}
 	end
 end)
