@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.0
+Date: 1. 2. 2018
+  Changes:
+    - Used the new API features to replace the old sorting mechanism (https://forums.factorio.com/viewtopic.php?f=3&t=57372#p339957)
+---------------------------------------------------------------------------------------------------
 Version: 1.8.1
 Date: 16. 12. 2017
   Bugfixes:
@@ -6,10 +11,10 @@ Date: 16. 12. 2017
 ---------------------------------------------------------------------------------------------------
 Version: 1.8.0
 Date: 16. 12. 2017
-  Changes:
-    - Updated for 0.16
   Bugfixes:
     - Fixed that opened blueprint books and similar items would close when the inventory was sorted (https://github.com/theRustyKnife/ManualInventorySorting/issues/4)
+  Changes:
+    - Updated for 0.16
 ---------------------------------------------------------------------------------------------------
 Version: 1.7.0
 Date: 15. 07. 2017

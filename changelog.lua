@@ -1,5 +1,15 @@
 return {
 	{
+		name = "2.0.0",
+		date = "1. 2. 2018",
+		Changes = {
+			{
+				"Used the new API features to replace the old sorting mechanism",
+				more = {["0.16.21"] = "https://forums.factorio.com/viewtopic.php?f=3&t=57372#p339957"},
+			},
+		},
+	},
+	{
 		name = "1.8.1",
 		date = "16. 12. 2017",
 		Bugfixes = {
