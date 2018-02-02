@@ -11,5 +11,10 @@ data:extend{
 		key_sequence = 'CONTROL + Q',
 		consuming = 'all',
 	},
-	--TODO: Autosort toggle
+	{
+		type = 'custom-input',
+		name = 'manual-inventory-auto-sort-toggle',
+		key_sequence = 'SHIFT + Y',
+		consuming = 'all',
+	}
 }
