@@ -11,8 +11,11 @@ This mod adds various hotkeys and settings to allow you to sort your inventory e
 - A hotkey to toggle auto-sort (default: "shift + y")
 - ~~Part inventory sorting (toggled from the options)~~ Removed in 2.0 because the new system doesn't allow it
 
+**Note that the game's auto-sort has to be disabled for the player inventory sorting features to work.**  
+If you only want to use the chest sorting features and have auto-sort on, leave the game's auto-sort on, but make sure the mod's auto-sort is off, so the inventory doesn't get sorted twice.
+
 # Hotkeys #
-*All hotkeys are customizable in the games settings.*
+*All hotkeys are customizable in the game's settings.*
 
 - "shift + q" = sort inventory
 - "ctrl + q" = sort open chest
