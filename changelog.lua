@@ -1,5 +1,27 @@
 return {
 	{
+		name = "2.0.0",
+		date = "1. 2. 2018",
+		Features = {
+			{
+				"Added an option to automatically sort containers when opened",
+				more = {["5a5f1b0dadcc441024d76d79"] = "https://mods.factorio.com/mod/manual-inventory-sort/discussion/5a5f1b0dadcc441024d76d79"},
+			},
+			{
+				"Added an option to automatically sort player's inventory when opened",
+			},
+		},
+		Changes = {
+			{
+				"Used the new API features to replace the old sorting mechanism",
+				more = {["0.16.21"] = "https://forums.factorio.com/viewtopic.php?f=3&t=57372#p339957"},
+			},
+			"Autosort is now much faster and sorts on each inventory change",
+			"Settings have been moved to the mod options (autosort is only togglable via the hotkey)",
+			"Removed part inventory sorting as it's not possible with the new system",
+		},
+	},
+	{
 		name = "1.8.1",
 		date = "16. 12. 2017",
 		Bugfixes = {
