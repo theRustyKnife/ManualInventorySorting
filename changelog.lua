@@ -1,5 +1,15 @@
 return {
 	{
+		name = "2.0.1",
+		date = "15. 6. 2018",
+		Bugfixes = {
+			{
+				"Fixed crash when opening equipment grid with sorting buttons enabled",
+				more = {["5aebd8e2398b7d00095668e5"] = "https://mods.factorio.com/mod/manual-inventory-sort/discussion/5aebd8e2398b7d00095668e5"},
+			},
+		},
+	},
+	{
 		name = "2.0.0",
 		date = "1. 2. 2018",
 		Features = {
