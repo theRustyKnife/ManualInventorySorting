@@ -43,7 +43,7 @@ local function sort_buttons_gui(index)
 				caption={'manual-inventory-gui-sort-title'},
 			}
 			frame.add{type='button', name='manual-inventory-sort-player', caption={'manual-inventory-gui-sort_player'}}
-			if player.opened and SORTABLE[player.opened.type] then
+			if player.opened_gui_type == defines.gui_type.entity and SORTABLE[player.opened.type] then
 				frame.add{type='button', name='manual-inventory-sort-opened', caption={'manual-inventory-gui-sort_chest'}}
 			end
 		end
