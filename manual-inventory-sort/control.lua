@@ -22,7 +22,7 @@ end
 
 local function sort_opened(index)
 	local player = game.players[index]
-	if player.opened and SORTABLE[player.opened.type] then
+	if player.opened_gui_type == defines.gui_type.entity and SORTABLE[player.opened.type] then
 		(
 			player.opened.get_inventory(defines.inventory.car_trunk) or
 			player.opened.get_inventory(defines.inventory.chest) or

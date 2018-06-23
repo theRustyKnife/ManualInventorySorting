@@ -1,5 +1,15 @@
 return {
 	{
+		name = "2.0.2",
+		date = "23. 6. 2018",
+		Bugfixes = {
+			{
+				"Fixed the equipment grid sorting crash again",
+				more = {["5aebd8e2398b7d00095668e5"] = "https://mods.factorio.com/mod/manual-inventory-sort/discussion/5aebd8e2398b7d00095668e5"},
+			},
+		},
+	},
+	{
 		name = "2.0.1",
 		date = "15. 6. 2018",
 		Bugfixes = {
