@@ -14,7 +14,7 @@ data:extend{
 	{
 		type = 'custom-input',
 		name = 'manual-inventory-auto-sort-toggle',
-		key_sequence = 'SHIFT + Y',
+		key_sequence = 'SHIFT + Z',
 		consuming = 'all',
-	}
+	},
 }
