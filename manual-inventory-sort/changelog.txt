@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.1.1
+Date: 6. 3. 2019
+  Bugfixes:
+    - Fixed sorting buttons being shown when they shouldn't sometimes (https://mods.factorio.com/mod/manual-inventory-sort/discussion/5c7b9a85c3dad0000bfc74c2)
+---------------------------------------------------------------------------------------------------
 Version: 2.1.0
 Date: 2. 3. 2019
   Changes:
