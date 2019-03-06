@@ -82,10 +82,10 @@ end)
 
 ------- Gui stuff -------
 
-local function sort_buttons_gui(player_index)
+local function sort_buttons_gui(player_index, closing)
 	local player = game.players[player_index]
 	local frame = player.gui.left['manual-inventory-sort-buttons']
-	if player.opened or player.opened_self then
+	if not closing and (player.opened or player.opened_self) then
 		if not frame then
 			frame = player.gui.left.add{
 				type = 'frame',
@@ -111,7 +111,7 @@ script.on_event(defines.events.on_gui_opened, function(event)
 	if options.sort_on_open then sort_opened(event.player_index); end
 	if options.sort_self_on_open then sort_player(event.player_index); end
 end)
-script.on_event(defines.events.on_gui_closed, function(event) sort_buttons_gui(event.player_index); end)
+script.on_event(defines.events.on_gui_closed, function(event) sort_buttons_gui(event.player_index, true); end)
 
 script.on_event(defines.events.on_gui_click, function(event)
 	if event.element.name == 'manual-inventory-sort-player' then sort_player(event.player_index)
