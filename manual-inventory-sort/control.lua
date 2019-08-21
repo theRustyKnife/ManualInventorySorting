@@ -44,10 +44,10 @@ end)
 
 ------- Some helper functions -------
 
-local function sort_player(index) game.players[index].get_main_inventory().sort_and_merge(); end
+local function sort_player(index) game.get_player(index).get_main_inventory().sort_and_merge(); end
 
 local function sort_opened(index)
-	local player = game.players[index]
+	local player = game.get_player(index)
 	if player.opened_gui_type == defines.gui_type.entity and SORTABLE[player.opened.type] then
 		(
 			player.opened.get_inventory(defines.inventory.car_trunk) or
@@ -64,7 +64,7 @@ script.on_event('manual-inventory-sort', function(event) sort_player(event.playe
 script.on_event('manual-inventory-sort-opened', function(event) sort_opened(event.player_index); end)
 
 script.on_event('manual-inventory-auto-sort-toggle', function(event)
-	local player = game.players[event.player_index]
+	local player = game.get_player(event.player_index)
 	local options = settings.get_player_settings(player)
 	
 	local value = not options['manual-inventory-auto-sort'].value
@@ -83,7 +83,7 @@ end)
 ------- Gui stuff -------
 
 local function sort_buttons_gui(player_index, closing)
-	local player = game.players[player_index]
+	local player = game.get_player(player_index)
 	local frame = player.gui.left['manual-inventory-sort-buttons']
 	if not closing and (player.opened or player.opened_self) then
 		if not frame then
