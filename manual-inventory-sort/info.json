@@ -1,6 +1,6 @@
 {
 	"name": "manual-inventory-sort",
-	"version": "2.1.1",
+	"version": "2.1.2",
 	"factorio_version": "0.17",
 	"title": "Manual Inventory Sorting",
 	"description": "Makes some tweaks to the way inventory sorting works.\nYou can sort your inventory on demand or toggle auto-sort. Auto-sort can be configured to work for just a part of your inventory. \nIt's also possible to sort chests, cars and cargo wagons.",

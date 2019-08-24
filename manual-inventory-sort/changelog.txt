@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.1.2
+Date: 24. 8. 2019
+  Bugfixes:
+    - Disallowed sorting while not in character or god controller (https://mods.factorio.com/mod/manual-inventory-sort/discussion/5d5d819708407a000d7af69c)
+---------------------------------------------------------------------------------------------------
 Version: 2.1.1
 Date: 6. 3. 2019
   Bugfixes:
