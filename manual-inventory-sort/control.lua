@@ -12,6 +12,11 @@ local SORTABLE = {
 	['cargo-wagon'] = true,
 }
 
+local SORTABLE_CONTROLLERS = {
+	[defines.controllers.character] = true,
+	[defines.controllers.god] = true,
+}
+
 
 ------- Init options caching -------
 
@@ -44,10 +49,15 @@ end)
 
 ------- Some helper functions -------
 
-local function sort_player(index) game.get_player(index).get_main_inventory().sort_and_merge(); end
+local function sort_player(index)
+	local player = game.get_player(index)
+	if not SORTABLE_CONTROLLERS[player.controller_type] then return; end
+	player.get_main_inventory().sort_and_merge()
+end
 
 local function sort_opened(index)
 	local player = game.get_player(index)
+	if not SORTABLE_CONTROLLERS[player.controller_type] then return; end
 	if player.opened_gui_type == defines.gui_type.entity and SORTABLE[player.opened.type] then
 		(
 			player.opened.get_inventory(defines.inventory.car_trunk) or
