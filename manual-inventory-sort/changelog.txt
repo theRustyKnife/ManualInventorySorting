@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.2.0
+Date: 28. 11. 2019
+  Features:
+    - Added a button for sorting trash slots (https://mods.factorio.com/mod/manual-inventory-sort/discussion/5db1351fe293e3000b42caa4)
+  Bugfixes:
+    - Fixed a crash when some mod opened a gui while the player was joining (https://mods.factorio.com/mod/manual-inventory-sort/discussion/5dbaf5c6269d7c000d35c8fc)
+---------------------------------------------------------------------------------------------------
 Version: 2.1.2
 Date: 24. 8. 2019
   Bugfixes:
