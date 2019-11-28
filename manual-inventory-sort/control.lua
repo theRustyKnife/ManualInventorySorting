@@ -31,7 +31,7 @@ local function load_options_cache(player_index)
 		auto_sort = options['manual-inventory-auto-sort'].value,
 	}
 end
-	
+
 local function init_options_cache()
 	global.options_cache = global.options_cache or {}
 	options_cache = options_cache or setmetatable(global.options_cache, {
@@ -63,6 +63,12 @@ local function sort_player(index)
 	local player = game.get_player(index)
 	if not SORTABLE_CONTROLLERS[player.controller_type] then return; end
 	player.get_main_inventory().sort_and_merge()
+end
+
+local function sort_player_trash(index)
+	local player = game.get_player(index)
+	if not SORTABLE_CONTROLLERS[player.controller_type] then return; end
+	player.get_inventory(defines.inventory.character_trash).sort_and_merge()
 end
 
 local function sort_opened(index)
@@ -114,6 +120,7 @@ local function sort_buttons_gui(player_index, closing)
 				caption = {'manual-inventory-gui-sort-title'},
 			}
 			frame.add{type='button', name='manual-inventory-sort-player', caption={'manual-inventory-gui-sort_player'}}
+			frame.add{type='button', name='manual-inventory-sort-player-trash', caption={'manual-inventory-gui-sort_player_trash'}}
 			if player.opened_gui_type == defines.gui_type.entity and SORTABLE[player.opened.type] then
 				frame.add{type='button', name='manual-inventory-sort-opened', caption={'manual-inventory-gui-sort_chest'}}
 			end
@@ -125,7 +132,7 @@ end
 ------- Gui events -------
 
 script.on_event(defines.events.on_gui_opened, function(event)
-	local options = options_cache[event.player_index]
+local options = options_cache[event.player_index]
 	
 	if options.sort_buttons then sort_buttons_gui(event.player_index); end
 	if options.sort_on_open then sort_opened(event.player_index); end
@@ -135,5 +142,6 @@ script.on_event(defines.events.on_gui_closed, function(event) sort_buttons_gui(e
 
 script.on_event(defines.events.on_gui_click, function(event)
 	if event.element.name == 'manual-inventory-sort-player' then sort_player(event.player_index)
+	elseif event.element.name == 'manual-inventory-sort-player-trash' then sort_player_trash(event.player_index)
 	elseif event.element.name == 'manual-inventory-sort-opened' then sort_opened(event.player_index); end
 end)
