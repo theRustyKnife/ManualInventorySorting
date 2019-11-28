@@ -20,27 +20,37 @@ local SORTABLE_CONTROLLERS = {
 
 ------- Init options caching -------
 
-local function update_options_cache(player_index)
+local options_cache
+
+local function load_options_cache(player_index)
 	local options = settings.get_player_settings(player_index)
-	local cache = global.options_cache[player_index] or {}
-	global.options_cache[player_index] = cache
+	return {
+		sort_buttons = options['manual-inventory-sort-buttons'].value,
+		sort_on_open = options['manual-inventory-sort-on-open'].value,
+		sort_self_on_open = options['manual-inventory-sort-self-on-open'].value,
+		auto_sort = options['manual-inventory-auto-sort'].value,
+	}
+end
 	
-	cache.sort_buttons = options['manual-inventory-sort-buttons'].value
-	cache.sort_on_open = options['manual-inventory-sort-on-open'].value
-	cache.sort_self_on_open = options['manual-inventory-sort-self-on-open'].value
-	cache.auto_sort = options['manual-inventory-auto-sort'].value
+local function init_options_cache()
+	global.options_cache = global.options_cache or {}
+	options_cache = options_cache or setmetatable(global.options_cache, {
+		__index = function(self, player_index)
+			local cache = load_options_cache(player_index)
+			self[player_index] = cache
+			return cache
+		end,
+	})
 end
 
-local function init()
-	if not global.options_cache then
-		global.options_cache = {}
-		for _, player in pairs(game.players) do update_options_cache(player.index); end
-	end
+local function update_options_cache(player_index)
+	options_cache[player_index] = nil
 end
 
-script.on_init(init)
-script.on_configuration_changed(init)
-script.on_event(defines.events.on_player_joined_game, function(event) update_options_cache(event.player_index); end)
+
+script.on_init(init_options_cache)
+script.on_load(init_options_cache)
+script.on_configuration_changed(init_options_cache)
 
 script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
 	update_options_cache(event.player_index)
@@ -86,7 +96,7 @@ script.on_event('manual-inventory-auto-sort-toggle', function(event)
 end)
 
 script.on_event(defines.events.on_player_main_inventory_changed, function(event)
-	if global.options_cache[event.player_index].auto_sort then sort_player(event.player_index); end
+	if options_cache[event.player_index].auto_sort then sort_player(event.player_index); end
 end)
 
 
@@ -115,7 +125,7 @@ end
 ------- Gui events -------
 
 script.on_event(defines.events.on_gui_opened, function(event)
-	local options = global.options_cache[event.player_index]
+	local options = options_cache[event.player_index]
 	
 	if options.sort_buttons then sort_buttons_gui(event.player_index); end
 	if options.sort_on_open then sort_opened(event.player_index); end
