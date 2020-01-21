@@ -67,7 +67,8 @@ end
 
 local function sort_player_trash(index)
 	local player = game.get_player(index)
-	if not SORTABLE_CONTROLLERS[player.controller_type] then return; end
+	-- God controller doesn't have trash slots, so this is just hardcoded here for now.
+	if player.controller_type ~= defines.controllers.character then return; end
 	player.get_inventory(defines.inventory.character_trash).sort_and_merge()
 end
 
@@ -120,7 +121,9 @@ local function sort_buttons_gui(player_index, closing)
 				caption = {'manual-inventory-gui-sort-title'},
 			}
 			frame.add{type='button', name='manual-inventory-sort-player', caption={'manual-inventory-gui-sort_player'}}
-			frame.add{type='button', name='manual-inventory-sort-player-trash', caption={'manual-inventory-gui-sort_player_trash'}}
+			if player.controller_type == defines.controllers.character then
+				frame.add{type='button', name='manual-inventory-sort-player-trash', caption={'manual-inventory-gui-sort_player_trash'}}
+			end
 			if player.opened_gui_type == defines.gui_type.entity and SORTABLE[player.opened.type] then
 				frame.add{type='button', name='manual-inventory-sort-opened', caption={'manual-inventory-gui-sort_chest'}}
 			end
