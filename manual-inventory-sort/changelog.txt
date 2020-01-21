@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.2.1
+Date: 21. 01. 2019
+  Changes:
+    - Support Factorio 0.18
+  Bugfixes:
+    - Fixed crash when sorting trash in god mode (https://mods.factorio.com/mod/manual-inventory-sort/discussion/5e1a1274d8bc0b000bd76bb0)
+---------------------------------------------------------------------------------------------------
 Version: 2.2.0
 Date: 28. 11. 2019
   Features:
