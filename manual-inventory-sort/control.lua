@@ -10,6 +10,7 @@ local SORTABLE = {
 	['logistic-container'] = true,
 	['car'] = true,
 	['cargo-wagon'] = true,
+	['spider-vehicle'] = true,
 }
 
 local SORTABLE_CONTROLLERS = {
