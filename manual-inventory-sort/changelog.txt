@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.2.3
+Date: 15. 08. 2020
+  Changes:
+    - Allowed sorting spidertron inventory
+    - Chest/vehicle sorting button now shows the name of the open chest/vehicle
+---------------------------------------------------------------------------------------------------
 Version: 2.2.2
 Date: 30. 04. 2020
   Bugfixes:
