@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.2.4
+Date: 03. 10. 2020
+  Bugfixes:
+    - Fixed crash when a mod changed it's own runtime setting (https://mods.factorio.com/mod/manual-inventory-sort/discussion/5f7879fc4db8ce2711d5903a)
+---------------------------------------------------------------------------------------------------
 Version: 2.2.3
 Date: 15. 08. 2020
   Changes:
