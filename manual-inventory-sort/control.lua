@@ -33,7 +33,12 @@ local function load_options_cache(player_index)
 	}
 end
 
-local function init_options_cache()
+local function init_options_cache(clear)
+	if clear then
+		global.options_cache = nil
+		options_cache = nil
+	end
+	
 	global.options_cache = global.options_cache or {}
 	options_cache = options_cache or setmetatable(global.options_cache, {
 		__index = function(self, player_index)
@@ -45,7 +50,8 @@ local function init_options_cache()
 end
 
 local function update_options_cache(player_index)
-	options_cache[player_index] = nil
+	if player_index then options_cache[player_index] = nil
+	else options_cache = {}; end
 end
 
 
@@ -54,7 +60,8 @@ script.on_load(init_options_cache)
 script.on_configuration_changed(init_options_cache)
 
 script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
-	update_options_cache(event.player_index)
+	if event.player_index then update_options_cache(event.player_index)
+	else init_options_cache(true); end
 end)
 
 
