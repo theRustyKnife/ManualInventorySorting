@@ -35,12 +35,12 @@ end
 
 local function init_options_cache(clear)
 	if clear then
-		global.options_cache = nil
+		storage.options_cache = nil
 		options_cache = nil
 	end
-	
-	global.options_cache = global.options_cache or {}
-	options_cache = options_cache or setmetatable(global.options_cache, {
+
+	storage.options_cache = storage.options_cache or {}
+	options_cache = options_cache or setmetatable(storage.options_cache, {
 		__index = function(self, player_index)
 			local cache = load_options_cache(player_index)
 			self[player_index] = cache
@@ -101,11 +101,11 @@ script.on_event('manual-inventory-sort-opened', function(event) sort_opened(even
 script.on_event('manual-inventory-auto-sort-toggle', function(event)
 	local player = game.get_player(event.player_index)
 	local options = settings.get_player_settings(player)
-	
+
 	local value = not options['manual-inventory-auto-sort'].value
 	options['manual-inventory-auto-sort'] = {value = value}
 	update_options_cache(player.index) -- This can be removed if the above line ever starts raising an event properly
-	
+
 	player.print{value and 'manual-inventory-auto-sort-on' or 'manual-inventory-auto-sort-off'}
 	if value then sort_player(player.index); end
 end)
@@ -144,7 +144,7 @@ end
 
 script.on_event(defines.events.on_gui_opened, function(event)
 local options = options_cache[event.player_index]
-	
+
 	if options.sort_buttons then sort_buttons_gui(event.player_index); end
 	if options.sort_on_open then sort_opened(event.player_index); end
 	if options.sort_self_on_open then sort_player(event.player_index); end
