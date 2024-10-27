@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.2.7
+Date: 24. 10. 2024
+  Bugfixes:
+    - Fixed logistic chests not getting sorted correctly (https://mods.factorio.com/mod/manual-inventory-sort/discussion/6717a0a8387691b8015f3cdd)
+  Changes:
+    - Sorting logistic chests and spidertrons will also sort their trash now
+---------------------------------------------------------------------------------------------------
 Version: 2.2.6
 Date: 24. 10. 2024
   Changes:

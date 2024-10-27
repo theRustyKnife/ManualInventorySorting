@@ -5,12 +5,12 @@
 
 ------- Constants -------
 
-local SORTABLE = {
-	['container'] = true,
-	['logistic-container'] = true,
-	['car'] = true,
-	['cargo-wagon'] = true,
-	['spider-vehicle'] = true,
+local SORTABLE_ENTITIES = {
+	['container'] = {defines.inventory.chest},
+	['logistic-container'] = {defines.inventory.chest, defines.inventory.logistic_container_trash},
+	['car'] = {defines.inventory.car_trunk},
+	['cargo-wagon'] = {defines.inventory.cargo_wagon},
+	['spider-vehicle'] = {defines.inventory.spider_trunk, defines.inventory.spider_trash},
 }
 
 local SORTABLE_CONTROLLERS = {
@@ -83,12 +83,11 @@ end
 local function sort_opened(index)
 	local player = game.get_player(index)
 	if not SORTABLE_CONTROLLERS[player.controller_type] then return; end
-	if player.opened_gui_type == defines.gui_type.entity and SORTABLE[player.opened.type] then
-		(
-			player.opened.get_inventory(defines.inventory.car_trunk) or
-			player.opened.get_inventory(defines.inventory.chest) or
-			player.opened.get_inventory(defines.inventory.cargo_wagon)
-		).sort_and_merge()
+	if player.opened_gui_type ~= defines.gui_type.entity then return; end
+	local entity = player.opened
+	local inventories = SORTABLE_ENTITIES[entity.type] or {}
+	for _, inventory_id in pairs(inventories) do
+		entity.get_inventory(inventory_id).sort_and_merge()
 	end
 end
 
