@@ -131,7 +131,7 @@ local function sort_buttons_gui(player_index, closing)
 			if player.controller_type == defines.controllers.character then
 				frame.add{type='button', name='manual-inventory-sort-player-trash', caption={'manual-inventory-gui-sort_player_trash'}}
 			end
-			if player.opened_gui_type == defines.gui_type.entity and SORTABLE[player.opened.type] then
+			if player.opened_gui_type == defines.gui_type.entity and SORTABLE_ENTITIES[player.opened.type] then
 				frame.add{type='button', name='manual-inventory-sort-opened', caption=player.opened.localised_name}
 			end
 		end
