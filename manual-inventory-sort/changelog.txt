@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.3.0
+Date: 10. 02. 2025
+  Changes:
+    - Allowed sorting linked-container type entities (https://mods.factorio.com/mod/manual-inventory-sort/discussion/67a7da40c31f700384891fb0)
+    - Added an option to allow sorting from map view (https://mods.factorio.com/mod/manual-inventory-sort/discussion/671fe3b62a987acc807e524e)
+    - Allowed sorting player inventory at any time if the player has a character associated (partially fixes not being able to sort in locomotive ui)
+  Bugfixes:
+    - Sorting buttons should only appear when actually applicable now
+---------------------------------------------------------------------------------------------------
 Version: 2.2.8
 Date: 28. 10. 2024
   Bugfixes:
