@@ -155,8 +155,7 @@ end
 ------- Gui events -------
 
 script.on_event(defines.events.on_gui_opened, function(event)
-local options = options_cache[event.player_index]
-
+	local options = options_cache[event.player_index]
 	if options.sort_buttons then sort_buttons_gui(event.player_index); end
 	if options.sort_on_open then sort_opened(event.player_index); end
 	if options.sort_self_on_open then sort_player(event.player_index); end
