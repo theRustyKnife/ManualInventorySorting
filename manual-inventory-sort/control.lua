@@ -3,28 +3,6 @@
 --TODO: Reimplement partial inventory sorting using a dummy chest probably
 
 
-------- Constants -------
-
-local SORTABLE_ENTITIES = {
-	['container'] = {defines.inventory.chest},
-	['logistic-container'] = {defines.inventory.chest, defines.inventory.logistic_container_trash},
-	['linked-container'] = {defines.inventory.chest},
-	['car'] = {defines.inventory.car_trunk},
-	['cargo-wagon'] = {defines.inventory.cargo_wagon},
-	['spider-vehicle'] = {defines.inventory.spider_trunk, defines.inventory.spider_trash},
-}
-
-local CONTROLLERS_WITH_SORTABLE_INVENTORY = {
-	[defines.controllers.character] = true,
-	[defines.controllers.god] = true,
-}
-local CONTROLLERS_ALLOWING_SORTING_ENTITIES = {
-	[defines.controllers.character] = true,
-	[defines.controllers.god] = true,
-	[defines.controllers.remote] = true,
-}
-
-
 ------- Init options caching -------
 
 local options_cache
@@ -36,6 +14,7 @@ local function load_options_cache(player_index)
 		sort_on_open = options['manual-inventory-sort-on-open'].value,
 		sort_self_on_open = options['manual-inventory-sort-self-on-open'].value,
 		auto_sort = options['manual-inventory-auto-sort'].value,
+		allow_sorting_remotely = options['manual-inventory-allow-sorting-remotely'].value,
 	}
 end
 
@@ -71,27 +50,60 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
 end)
 
 
+------- Constants -------
+
+local CONTROLLERS = defines.controllers
+
+local function has_sortable_inventory(player)
+	local controller = player.controller_type
+	return controller == CONTROLLERS.character
+		or controller == CONTROLLERS.god
+end
+
+local function has_sortable_trash(player)
+	return player.controller_type == CONTROLLERS.character
+end
+
+local function can_sort_entities(player)
+	local controller = player.controller_type
+	return (
+		controller == CONTROLLERS.character
+		or controller == CONTROLLERS.god
+		or controller == CONTROLLERS.remote and options_cache[player.index].allow_sorting_remotely
+	) and player.opened_gui_type == defines.gui_type.entity
+end
+
+local SORTABLE_ENTITY_INVENTORIES = {
+	['container'] = {defines.inventory.chest},
+	['logistic-container'] = {defines.inventory.chest, defines.inventory.logistic_container_trash},
+	['linked-container'] = {defines.inventory.chest},
+	['car'] = {defines.inventory.car_trunk},
+	['cargo-wagon'] = {defines.inventory.cargo_wagon},
+	['spider-vehicle'] = {defines.inventory.spider_trunk, defines.inventory.spider_trash},
+}
+
+
 ------- Some helper functions -------
 
 local function sort_player(index)
 	local player = game.get_player(index)
-	if not CONTROLLERS_WITH_SORTABLE_INVENTORY[player.controller_type] then return; end
+	if not has_sortable_inventory(player) then return; end
 	player.get_main_inventory().sort_and_merge()
 end
 
 local function sort_player_trash(index)
 	local player = game.get_player(index)
 	-- God controller doesn't have trash slots, so this is just hardcoded here for now.
-	if player.controller_type ~= defines.controllers.character then return; end
+	if not has_sortable_trash(player) then return; end
 	player.get_inventory(defines.inventory.character_trash).sort_and_merge()
 end
 
 local function sort_opened(index)
 	local player = game.get_player(index)
-	if not CONTROLLERS_ALLOWING_SORTING_ENTITIES[player.controller_type] then return; end
-	if player.opened_gui_type ~= defines.gui_type.entity then return; end
+	if not can_sort_entities(player) then return; end
 	local entity = player.opened
-	local inventories = SORTABLE_ENTITIES[entity.type] or {}
+	local inventories = SORTABLE_ENTITY_INVENTORIES[entity.type]
+	if not inventories then return; end
 	for _, inventory_id in pairs(inventories) do
 		entity.get_inventory(inventory_id).sort_and_merge()
 	end
@@ -127,10 +139,10 @@ local function sort_buttons_gui(player_index, closing)
 	local frame = player.gui.left['manual-inventory-sort-buttons']
 	if not closing and (player.opened or player.opened_self) then
 		if not frame then
-			local has_sortable_inventory = CONTROLLERS_WITH_SORTABLE_INVENTORY[player.controller_type]
-			local has_sortable_trash = player.controller_type == defines.controllers.character
-			local can_sort_opened = CONTROLLERS_ALLOWING_SORTING_ENTITIES[player.controller_type] and player.opened_gui_type == defines.gui_type.entity and SORTABLE_ENTITIES[player.opened.type]
-			if not has_sortable_inventory and not has_sortable_trash and not can_sort_opened then return end
+			local has_sortable_inventory = has_sortable_inventory(player)
+			local has_sortable_trash = has_sortable_trash(player)
+			local can_sort_opened = can_sort_entities(player) and SORTABLE_ENTITY_INVENTORIES[player.opened.type]
+			if not has_sortable_inventory and not has_sortable_trash and not can_sort_opened then return; end
 
 			frame = player.gui.left.add{
 				type = 'frame',

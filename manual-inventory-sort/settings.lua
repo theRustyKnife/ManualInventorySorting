@@ -23,4 +23,10 @@ data:extend{
 		setting_type = 'runtime-per-user',
 		default_value = false,
 	},
+	{
+		type = 'bool-setting',
+		name = 'manual-inventory-allow-sorting-remotely',
+		setting_type = 'runtime-per-user',
+		default_value = false,
+	},
 }
