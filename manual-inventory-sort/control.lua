@@ -54,10 +54,10 @@ end)
 
 local CONTROLLERS = defines.controllers
 
-local function has_sortable_inventory(player)
-	local controller = player.controller_type
-	return controller == CONTROLLERS.character
-		or controller == CONTROLLERS.god
+local function find_main_sortable_inventory(player)
+	local character = player.character
+	if character ~= nil then return character.get_inventory(defines.inventory.character_main); end
+	return player.get_main_inventory()
 end
 
 local function has_sortable_trash(player)
@@ -86,9 +86,9 @@ local SORTABLE_ENTITY_INVENTORIES = {
 ------- Some helper functions -------
 
 local function sort_player(index)
-	local player = game.get_player(index)
-	if not has_sortable_inventory(player) then return; end
-	player.get_main_inventory().sort_and_merge()
+	local inventory = find_main_sortable_inventory(game.get_player(index))
+	if not inventory then return; end
+	inventory.sort_and_merge()
 end
 
 local function sort_player_trash(index)
@@ -139,7 +139,7 @@ local function sort_buttons_gui(player_index, closing)
 	local frame = player.gui.left['manual-inventory-sort-buttons']
 	if not closing and (player.opened or player.opened_self) then
 		if not frame then
-			local has_sortable_inventory = has_sortable_inventory(player)
+			local has_sortable_inventory = find_main_sortable_inventory(player) ~= nil
 			local has_sortable_trash = has_sortable_trash(player)
 			local can_sort_opened = can_sort_entities(player) and SORTABLE_ENTITY_INVENTORIES[player.opened.type]
 			if not has_sortable_inventory and not has_sortable_trash and not can_sort_opened then return; end
