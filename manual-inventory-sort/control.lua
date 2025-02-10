@@ -14,9 +14,14 @@ local SORTABLE_ENTITIES = {
 	['spider-vehicle'] = {defines.inventory.spider_trunk, defines.inventory.spider_trash},
 }
 
-local SORTABLE_CONTROLLERS = {
+local CONTROLLERS_WITH_SORTABLE_INVENTORY = {
 	[defines.controllers.character] = true,
 	[defines.controllers.god] = true,
+}
+local CONTROLLERS_ALLOWING_SORTING_ENTITIES = {
+	[defines.controllers.character] = true,
+	[defines.controllers.god] = true,
+	[defines.controllers.remote] = true,
 }
 
 
@@ -70,7 +75,7 @@ end)
 
 local function sort_player(index)
 	local player = game.get_player(index)
-	if not SORTABLE_CONTROLLERS[player.controller_type] then return; end
+	if not CONTROLLERS_WITH_SORTABLE_INVENTORY[player.controller_type] then return; end
 	player.get_main_inventory().sort_and_merge()
 end
 
@@ -83,7 +88,7 @@ end
 
 local function sort_opened(index)
 	local player = game.get_player(index)
-	if not SORTABLE_CONTROLLERS[player.controller_type] then return; end
+	if not CONTROLLERS_ALLOWING_SORTING_ENTITIES[player.controller_type] then return; end
 	if player.opened_gui_type ~= defines.gui_type.entity then return; end
 	local entity = player.opened
 	local inventories = SORTABLE_ENTITIES[entity.type] or {}
@@ -122,17 +127,24 @@ local function sort_buttons_gui(player_index, closing)
 	local frame = player.gui.left['manual-inventory-sort-buttons']
 	if not closing and (player.opened or player.opened_self) then
 		if not frame then
+			local has_sortable_inventory = CONTROLLERS_WITH_SORTABLE_INVENTORY[player.controller_type]
+			local has_sortable_trash = player.controller_type == defines.controllers.character
+			local can_sort_opened = CONTROLLERS_ALLOWING_SORTING_ENTITIES[player.controller_type] and player.opened_gui_type == defines.gui_type.entity and SORTABLE_ENTITIES[player.opened.type]
+			if not has_sortable_inventory and not has_sortable_trash and not can_sort_opened then return end
+
 			frame = player.gui.left.add{
 				type = 'frame',
 				name = 'manual-inventory-sort-buttons',
 				direction = 'vertical',
 				caption = {'manual-inventory-gui-sort-title'},
 			}
-			frame.add{type='button', name='manual-inventory-sort-player', caption={'manual-inventory-gui-sort_player'}}
-			if player.controller_type == defines.controllers.character then
+			if has_sortable_inventory then
+				frame.add{type='button', name='manual-inventory-sort-player', caption={'manual-inventory-gui-sort_player'}}
+			end
+			if has_sortable_trash then
 				frame.add{type='button', name='manual-inventory-sort-player-trash', caption={'manual-inventory-gui-sort_player_trash'}}
 			end
-			if player.opened_gui_type == defines.gui_type.entity and SORTABLE_ENTITIES[player.opened.type] then
+			if can_sort_opened then
 				frame.add{type='button', name='manual-inventory-sort-opened', caption=player.opened.localised_name}
 			end
 		end
