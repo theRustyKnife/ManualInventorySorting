@@ -8,6 +8,7 @@
 local SORTABLE_ENTITIES = {
 	['container'] = {defines.inventory.chest},
 	['logistic-container'] = {defines.inventory.chest, defines.inventory.logistic_container_trash},
+	['linked-container'] = {defines.inventory.chest},
 	['car'] = {defines.inventory.car_trunk},
 	['cargo-wagon'] = {defines.inventory.cargo_wagon},
 	['spider-vehicle'] = {defines.inventory.spider_trunk, defines.inventory.spider_trash},
