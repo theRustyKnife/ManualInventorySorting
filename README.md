@@ -1,3 +1,5 @@
+# **This project has been moved to [codeberg](https://codeberg.org/rustie/manual-inventory-sorting)**. #
+
 # Description #
 **Ever wanted to split your stacks before inserting them into machines but still keep the inventory nicely sorted? Or perhaps you just wanted to organize the inventory to your liking?
 Well then I'm here to save you from the trouble of opening the settings menu.**  
